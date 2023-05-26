@@ -1,4 +1,4 @@
-import { pool } from "../utils/database.js"
+import { pool ,connection } from "../utils/database.js"
 
 
 export default class Poster {
@@ -11,27 +11,20 @@ export default class Poster {
     }
 
     save(){
-        console.log(`Product with id ${this.id} is saved`)
+
+        connection.execute("INSERT INTO posters () VALUES (?,?,?,?)")
+        
     }
 
     static findById(id){
-        console.log(id)
+
+        return connection.execute("select * from posters where id = ?",[id])
+
     }
 
-    static async fetchAll(){
-        let conn
-        let rows
-        try {
-            conn = await pool.getConnection()
-            rows = await conn.query("select * from posters")
-
-        } catch (error) {
-            throw error
-        } finally {
-            conn ? conn.end() : null
-
-            return rows
-        }
+    static fetchAll(){
+        
+        return connection.execute("select * from posters")
 
     }
     

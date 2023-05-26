@@ -1,15 +1,20 @@
 import Poster from "../models/Poster.js"
 
 
-const GetPosters = async (req , res) => {
-    const posters = await Poster.fetchAll()
-    res.send(posters)
+const GetPosters = (req , res) => {
+
+    Poster.fetchAll().then( (rows) => {
+        res.send(rows)
+    })
+
 }
 
 const GetPoster = (req , res) => {
-    const posters = Poster.fetchAll()
-    console.log(req.params.id)
-    res.send("poster")
+
+    Poster.findById(1).then( row => {
+        res.send(row)
+    })
+
 }
 
 export { GetPoster , GetPosters}

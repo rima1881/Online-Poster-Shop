@@ -8,4 +8,7 @@ const pool = mariada.createPool({
     connectionLimit: 5
 })
 
-export { pool }
+
+const connection = await pool.getConnection()
+
+export { pool ,connection }
