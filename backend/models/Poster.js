@@ -2,17 +2,22 @@ import { pool ,connection } from "../utils/database.js"
 
 
 export default class Poster {
-    constructor(id,name,size,price,artist_id){
-        this.id = id
-        this.name = name
-        this.size = size
+    constructor(name,pic,size,ratio,price,artist_id){
+        this.poster_name = name
+        this.pic = pic
+        this.poster_size = size
+        this.ratio = ratio
         this.price = price
         this.artist_id = artist_id
     }
 
+    validate(){
+        return true
+    }
+
     save(){
 
-        connection.execute("INSERT INTO posters () VALUES (?,?,?,?)")
+        return connection.execute("INSERT INTO posters (poster_name,pic,poster_size,ratio,price,artist_id) VALUES (?,?,?,?,?,?)",[this.poster_name,this.pic,this.poster_size,this.ratio,this.price,this.artist_id])
         
     }
 

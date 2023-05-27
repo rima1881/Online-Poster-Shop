@@ -1,6 +1,6 @@
 const signup = (req,res) => {
-    res.send("ok baby")
-    console.log(req.query.username)
+    res.status(201).json("ok baby")
+    console.log(req.body)
 }
 
 export { signup }
