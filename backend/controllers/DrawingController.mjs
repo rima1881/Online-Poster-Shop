@@ -1,10 +1,24 @@
-import Drawing from "../models/Drawing.mjs"
+
 
 const GetDrawings = (req,res) => {
-    Drawing.fetchAllPrimes().then( (rows) => {
-        res.status(200).json({data : rows , num : rows.length })
-    })
+
+}
+
+const GetDrawing = (req,res) => {
+
+}
+
+const AddDrawing = (req,res) => {
+
+}
+
+const EditDrawing = (req,res) => {
+
+}
+
+const RemoveDrawing = (req,res) => {
+
 }
 
 
-export { GetDrawings }
+export { GetDrawings , GetDrawing , AddDrawing , EditDrawing , RemoveDrawing }
