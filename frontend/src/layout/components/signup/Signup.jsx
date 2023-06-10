@@ -12,10 +12,7 @@ export default function Signup(props){
             username : '',
             email : '',
             password : '',
-            passwordConf : '',
-            address1 : '',
-            address2 : '',
-            post : ''
+            passwordConf : ''
         }
     )
 
@@ -29,41 +26,36 @@ export default function Signup(props){
         })
     }
 
+    function validator(){
+        return true
+    }
 
     async function handleSubmit(event){
         event.preventDefault()
-        try{
-            /*
-            const response = await axios.post("/signup",
-                JSON.stringify({ formData }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );*/
 
+        if(validator()){
+            
+        try{
             axios({
-                method: 'post',
+                method: 'put',
                 url:'/api/auth/signup',
                 baseURL : 'http://localhost:5000',
                 headers : { 'Content-Type': 'application/json'},
                 data : JSON.stringify ({
-                    username : formData.username,
-                    email : formData.email,
-                    password : formData.password,
-                    address1 : formData.address1,
-                    address2 : formData.address2,
-                    post : formData.post
+                name : formData.username,
+                email : formData.email,
+                pwd : formData.password
                 }),
-                
-                
-            }).then( Response => {
-                console.log(Response)
-            })
-            
-        }
-        catch (error){
-            throw error;
+                }).then( Response => {
+                    console.log(Response)
+                })
+
+            props.closeBtnhandle()
+
+            }
+            catch (error){
+                throw error;
+            }
         }
 
     }
@@ -85,15 +77,6 @@ export default function Signup(props){
 
                     <label htmlFor='passwordConf'>Password Confirmation :</label>
                     <input type='password' name='passwordConf' onChange={handleChange} value={formData.passwordConf} required/>
-
-                    <label htmlFor='address1'>Address 1:</label>
-                    <input type='text' name='address1' onChange={handleChange} value={formData.address1} required/>
-
-                    <label htmlFor='address2'>Address 2:</label>
-                    <input type='text' name='address2' onChange={handleChange} value={formData.address2} required/>
-
-                    <label htmlFor='post'>Postal code :</label>
-                    <input type='text' name='post' onChange={handleChange} value={formData.post} required/>
 
                     <button onClick={handleSubmit}>
                         <p>Sign Up</p>

@@ -2,60 +2,87 @@ import bcrypt from 'bcryptjs'
 import User from '../models/User.mjs'
 import jwt from "jsonwebtoken"
 
-const signup = (req,res) => {
-    const { email , pwd , name} = req.body
 
-    bcrypt.hash(pwd,12).then(hasedpass => {
-        User.create({
+/////////////////////////////////////////////////////////////////////////////////////////////////
+const signup = async (req,res) => {
+
+    try{
+
+        const { email , pwd , name} = req.body
+
+        //hashing password
+        const hasedpass = await bcrypt.hash(pwd,12)
+
+        //add user to db
+        const result = await User.create({
             email : email,
             pwd: hasedpass,
             name: name
-        }).then( result =>{
-            res.status(201).json({message : "user is created" , id : result._id})
         })
 
+        //creat token
+        const token = jwt.sign({
+            email : result.email,
+            id : result.id
+        }, 'asdgfl,jityhjktiomdlaasdhowwhypleasedonthackmealjkcmsdjkcnsjdklnvljdsvnknfd;iuvdfj', { expiresIn : "2h"})
+            
 
-    }).catch(error => {
+        res.status(201).json({token : token, role : result.role.name})
+
+    }
+    catch(error) {
         if(!error.statusCode)
             error.statusCode = 500
-        throw error
-    })
+
+        res.status(error.statusCode).json({error : error.message})
+    }
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+const login = async (req,res) => {
+    const { email , pwd } = req.body
 
-const login = (req,res) => {
-    const { email , pwd} = req.body
-    let user
+    try{
 
-    User.findOne({email : email}).then( u => {
-        if(!u){
+        const user = await User.findOne({where : {email : email}})
+
+        //check email
+        if(!user){
             const error = new Error("really no user with this data was found!!!")
             error.statusCode = 401
             throw error
         }
-        user = u
-        return bcrypt.compare(pwd,u.pwd)
-    })
-    .then(isEqual => {
+
+        //check password
+        const isEqual = await bcrypt.compare(pwd,user.pwd)
         if(!isEqual){
             const error = new Error("no user with this data was found!!!")
-            error.status = 401
+            error.statusCode = 401
             throw error
         }
+
+        //creating token
         const token = jwt.sign({
             email : user.email,
             id : user.id
         }, 'asdgfl,jityhjktiomdlaasdhowwhypleasedonthackmealjkcmsdjkcnsjdklnvljdsvnknfd;iuvdfj', { expiresIn : "2h"})
 
-        res.status(200).json({token : token, userId : user.id})
-    })
-    
-    .catch(error =>{
+        //finding role
+        const role = await user.getRole()
+
+
+        res.status(200).json({token : token, role : role , user : user.name})
+
+    }
+    catch(error){
+
+        //unkown error
         if(!error.statusCode)
             error.statusCode = 500
-        throw error
-    })
+    
+        res.status(error.statusCode).json({error : error.message})
+    }
 }
 
 
