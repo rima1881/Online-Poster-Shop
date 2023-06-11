@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs'
 import User from '../models/User.mjs'
 import jwt from "jsonwebtoken"
+import Role from '../models/Role.mjs'
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,15 +18,19 @@ const signup = async (req,res) => {
         const result = await User.create({
             email : email,
             pwd: hasedpass,
-            name: name
+            name: name,
+            include: [Role]
         })
 
-        //creat token
+        console.log(result)
+
+        //create token
         const token = jwt.sign({
             email : result.email,
             id : result.id
         }, 'asdgfl,jityhjktiomdlaasdhowwhypleasedonthackmealjkcmsdjkcnsjdklnvljdsvnknfd;iuvdfj', { expiresIn : "2h"})
             
+
 
         res.status(201).json({token : token, role : result.role.name})
 
@@ -45,7 +50,9 @@ const login = async (req,res) => {
 
     try{
 
-        const user = await User.findOne({where : {email : email}})
+        const user = await User.findOne({where : {email : email} , include :  [Role] , attributes : [ 'name' , 'email' , 'pwd']})
+
+        console.log(user)
 
         //check email
         if(!user){
@@ -68,11 +75,7 @@ const login = async (req,res) => {
             id : user.id
         }, 'asdgfl,jityhjktiomdlaasdhowwhypleasedonthackmealjkcmsdjkcnsjdklnvljdsvnknfd;iuvdfj', { expiresIn : "2h"})
 
-        //finding role
-        const role = await user.getRole()
-
-
-        res.status(200).json({token : token, role : role , user : user.name})
+        res.status(200).json({token : token, role : user.role.name , user : user.name})
 
     }
     catch(error){

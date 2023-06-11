@@ -22,7 +22,7 @@ const app = express()
 const port = 5000
 
 //Setting up CORS
-app.use(cors())
+app.use(cors({credentials:true ,origin: 'http://localhost:5173'}))
 
 //app config
 app.use(bodyparser.json())

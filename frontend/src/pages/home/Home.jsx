@@ -19,14 +19,14 @@ export default function Home(){
         console.log("request was sent")
         axios({
             method: 'get',
-            url:'/api/poster',
+            url:'/api/drawing',
             baseURL : 'http://localhost:5000',
             headers : {
                 "Content-Type" : "application/json",
                 "Authorization" : false
             }
         }).then( Response => {
-            setListData(Response.data.data)
+            //setListData(Response.data.data)
         })
     },[])
 

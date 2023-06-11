@@ -1,97 +1,154 @@
 import Role from '../models/Role.mjs'
 import User from "../models/User.mjs"
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-const createRole = (req,res) => {
-    const { name } = req.body
 
-    Role.create({
-        name : name
-    }).then(
-        res.status(201).json({ message : 'role is created'})
-    ).catch( error =>
-        res.status(error.statusCode).json(error.message)
-    )
+//updated
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+const createRole = async (req,res) => {
+
+    try{
+        const { name } = req.body
+        await Role.create({
+            name : name
+        })
+    
+        return res.status(201).json({ message : 'role is created'})
+    }
+    catch(error){
+
+        if(!error.statusCode)
+            error.statusCode = 500
+
+        return res.status(error.statusCode).json({ error : error.message })
+    }
 
 }
 
-
+//updated
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 const getRoles = (req,res) => {
 
     Role.findAll().then( row =>
         res.status(200).json(row)
-    ).catch( error =>
-        res.status(error.statusCode).json(error.message)
-    )
-}
+    ).catch( error => {
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-const editRole = (req ,res) => {
-    const id = req.params.id
+        if(!error.statusCode)
+            error.statusCode = 500
 
-    Role.findByPk(id).then( r => {
-        if(r == null){
-            res.status(404).send()
-        }else{
+        res.status(error.statusCode).json({ error : error.message})
 
-            const name = res.body.rloe_name
-            r.name = name
-
-            p.save().then(
-                res.status(202).json({ message : "role is edited" })
-            )
-        }
-    }).catch( err => {
-        console.log(err)
-        res.status(500).send()
     })
 }
 
+//updated
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-const deleteRole = (req,res) => {
-    const id = req.params.id
+const editRole = async (req ,res) => {
 
-    Role.findByPk(id).then( r => {
-        r.destroy().then(
-            res.status(200).json({ message : "user is removed"})
-        )
-    }).catch(
-        res.json()
-    )
+    try{
+        const id = req.params.id
+
+        const role = await Role.findByPk(id)
+
+        //check the id
+        if(!role){
+            const error = new error("there is no such role")
+            error.statusCode = 404
+            throw error
+        }
+
+
+        const name = res.body.role_name
+        role.name = name
+
+        await p.save()
+
+        return  res.status(202).json({ message : "role is edited" })
+
+    }
+    catch(error) {
+
+        if(!error.statusCode)
+            error.statusCode = 500
+
+        return res.status(error.statusCode).json({ error : error.statusCode})
+    }
 }
 
-
+//updated
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-const getUsers = (req,res) => {
+const deleteRole = async (req,res) => {
 
-    User.findAll().then(row =>
+    try{
+        const id = req.params.id
+
+        const role = await Role.findByPk(id)
+
+        if(!role){
+            const error = new error("there is no such role")
+            error.statusCode = 404
+            throw error
+        }
+
+        await r.destroy()
+
+        return res.status(200).json({ message : "user is removed"})
+    }
+    catch (error) {
+
+        if(!error.statusCode)
+            error.statusCode = 500
+
+        return res.status(error.statusCode).json({ error : error.message })
+
+    }
+}
+
+//updated
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+const getUsers =  (req,res) => {
+
+    User.findAll({ include : [Role] , attributes : ['name','email'] }).then(row =>
         res.status(200).json(row)
-    )
+    ).catch((error => {
+
+        if(!error.statusCode)
+            error.statusCode = 500
+
+        res.status(error.statusCode).json({ error : error.message})
+
+    }))
 }
 
-
+//updated
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-const getUser = (req,res) => {
-    const id = req.params.id
-    console.log("start")
+const getUser = async (req,res) => {
 
-    User.findByPk(id).then( row => {
-        if(!row){
-            res.status(404).json()
-            console.log("null")
+    try{
+
+        const id = req.params.id
+        const user = await User.findByPk(id , { include: [Role] , attributes : ['name','email','pic','addr1','addr2','post']})
+
+        if(!user){
+            const error = new Error("no such user was found")
+            error.statusCode = 404
+            throw error
         }
-        else{
-            res.status(200).json(row)
-            console.log("ok")
-        }
-    }).catch( (err) => {
-        res.status(500).json()
-        console.log("error")
-    })
+
+        console.log(user.role.name)
+        return res.status(200).json(user)
+
+    }
+    catch(error) {
+
+        //unkown error
+        if(!error.statusCode)
+            error.statusCode = 500
+
+        return res.status(error.statusCode).json(error.message)
+    }
 }
 
-
+//updated
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 const editUser = async (req,res) => {
 
@@ -133,18 +190,33 @@ const editUser = async (req,res) => {
     }
 }
 
-
+//updated
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-const deleteUser = (req,res) => {
-    const id = req.params.id
+const deleteUser = async (req,res) => {
 
-    User.findByPk(id).then( U => {
-        U.destroy().then(
+    try{
+        const id = req.params.id
+
+        const user = await User.findByPk(id)
+
+        if(!user){
+            const error = new Error("no such user was found")
+            error.statusCode = 404
+            throw error
+        }
+
+        user.destroy().then(
             res.status(200).json({ message : "user is removed"})
         )
-    }).catch(
-        res.status(500).json()
-    )
+    }
+    catch(error) {
+
+        //unkown error
+        if(!error.statusCode)
+            error.statusCode = 500
+        
+        res.status(error.statusCode).json({ error : error.message})
+    }
 }
 
 

@@ -1,7 +1,8 @@
 import styles from './Login.module.css'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import useAuth from '../hooks/useAuth';
+import useAuth from '../../../hooks/useAuth';
+import axios from 'axios';
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 
@@ -16,7 +17,6 @@ export default function Login(props){
 
     const [errMsg, setErrMsg] = useState('');
     const { setAuth } = useAuth();
-
 
 
     function handleChange(event){
@@ -34,9 +34,10 @@ export default function Login(props){
         event.preventDefault()
 
         try{
+            console.log("fuck")
             axios({
-                method: 'put',
-                url:'/api/auth/signup',
+                method: 'post',
+                url:'/api/auth/login',
                 baseURL : 'http://localhost:5000',
                 headers : { 'Content-Type': 'application/json'},
                 withCredentials: true,
@@ -46,6 +47,7 @@ export default function Login(props){
                 }),
                 }).then( Response => {
                     console.log(JSON.stringify(Response?.data));
+                    console.log("hello world")
                     const accessToken = Response?.data?.accessToken;
                     const role = Response?.data?.role;
                     const { email , password } = loginData
@@ -55,20 +57,23 @@ export default function Login(props){
             props.closeBtnhandle()
         }
         catch(error){
-            if (!err?.response) {
+            console.log(error)
+            if (!error?.response) {
                 setErrMsg('No Server Response');
-            } else if (err.response?.status === 400) {
+                console.log("No Server Response")
+            } else if (error.response?.status === 400) {
+                console.log("Missing Username or Password")
                 setErrMsg('Missing Username or Password');
-            } else if (err.response?.status === 401) {
+            } else if (error.response?.status === 401) {
                 setErrMsg('Unauthorized');
+                console.log("Unauthorized")
             } else {
                 setErrMsg('Login Failed');
+                console.log("Login Failed")
             }
         }
 
 
-
-        props.closeBtnhandle()
     }
 
     return(
@@ -78,7 +83,7 @@ export default function Login(props){
                     <span>{errMsg}</span>
                     <nav><FontAwesomeIcon onClick={props.closeBtnhandle} className={styles.close} icon={faXmark} /></nav>
                     <label htmlFor="email">Email:</label>
-                    <input onChange={handleChange} value={loginData.email} name='email' type='text'/>
+                    <input onChange={handleChange} value={loginData.email} name='email' type='email'/>
                     <label htmlFor='passsword'>Password:</label>
                     <input onChange={handleChange} value={loginData.password} name='password' type='password'/>
                     <button onClick={handleSubmit}>

@@ -1,12 +1,19 @@
 import Drawing from "../models/Drawing.mjs"
 
 
-const GetDrawings = (req,res) => {
-    Drawing.findAll().then( row=>
-        res.status(200).json(row)
-    ).catch(
-        res.status(500).json({ messge : "he is shit believe me!!!"})
-    )
+const GetDrawings = async (req,res) => {
+
+    try{
+        const drawings  = await Drawing.findAll()
+        res.status(200).json(drawings)
+    }
+    catch(error){
+
+        if(!error.statusCode)
+            error.statusCode
+
+        res.status(error.statusCode).json({ messge : "he is shit believe me!!!"})
+    }
 }
 
 const GetDrawing = (req,res) => {

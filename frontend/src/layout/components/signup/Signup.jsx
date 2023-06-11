@@ -47,6 +47,8 @@ export default function Signup(props){
                 pwd : formData.password
                 }),
                 }).then( Response => {
+
+
                     console.log(Response)
                 })
 
@@ -54,7 +56,6 @@ export default function Signup(props){
 
             }
             catch (error){
-                throw error;
             }
         }
 
