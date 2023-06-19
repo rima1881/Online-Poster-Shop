@@ -1,7 +1,7 @@
 import styles from './Login.module.css'
 import { useState } from 'react'
+import useAuth from '../../../hooks/useAuth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import useAuth from '../../../hooks/useAuth';
 import axios from 'axios';
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -15,8 +15,11 @@ export default function Login(props){
         }
     )
 
+
     const [errMsg, setErrMsg] = useState('');
-    const { setAuth } = useAuth();
+    const [ isSubmiting , setIsSubmiting ] = useState(false)
+
+    const { setAuth } = useAuth()
 
 
     function handleChange(event){
@@ -30,12 +33,13 @@ export default function Login(props){
 
     }
 
-    function handleSubmit(event){
+    const handleSubmit = async (event) => {
         event.preventDefault()
+        setIsSubmiting(true)
 
         try{
-            console.log("fuck")
-            axios({
+
+            const Response = await axios({
                 method: 'post',
                 url:'/api/auth/login',
                 baseURL : 'http://localhost:5000',
@@ -45,16 +49,20 @@ export default function Login(props){
                 email : loginData.email,
                 pwd : loginData.password
                 }),
-                }).then( Response => {
-                    console.log(JSON.stringify(Response?.data));
-                    console.log("hello world")
-                    const accessToken = Response?.data?.accessToken;
-                    const role = Response?.data?.role;
-                    const { email , password } = loginData
-                    setAuth({ email, password, role, accessToken });
                 })
 
-            props.closeBtnhandle()
+                console.log(JSON.stringify(Response?.data));
+
+                const accessToken = Response?.data?.token;
+                const role = Response?.data?.role;
+                const { email , password } = loginData
+
+                await setAuth({ email : email, password : password, role : 2001, accessToken : accessToken })
+                
+
+                props.closeBtnhandle()
+
+
         }
         catch(error){
             console.log(error)
@@ -73,25 +81,34 @@ export default function Login(props){
             }
         }
 
+        setIsSubmiting(false)
 
     }
 
+
+    const form = <form className={styles.form}>
+            <nav>
+                <FontAwesomeIcon onClick={props.closeBtnhandle} className={styles.close} icon={faXmark} />
+            </nav>
+            <label htmlFor="email">Email:</label>
+            <input onChange={handleChange} value={loginData.email} name='email' type='email'/>
+            <label htmlFor='passsword'>Password:</label>
+            <input onChange={handleChange} value={loginData.password} name='password' type='password'/>
+            <button onClick={handleSubmit}>
+                <p>Login</p>
+            </button>
+            <span><a>Forgot my Password</a> | <a>Sign Up</a></span>
+        </form>
+
+
+    const loader = <>
+        <div className={styles.loader}></div>
+    </>
+
     return(
-        <div className={ props.on ? styles.on : styles.off}>
+        <div className={ props.on ? styles.on : styles.hidden}>  
             <div className={styles.container}>
-                <form className={styles.form}>
-                    <span>{errMsg}</span>
-                    <nav><FontAwesomeIcon onClick={props.closeBtnhandle} className={styles.close} icon={faXmark} /></nav>
-                    <label htmlFor="email">Email:</label>
-                    <input onChange={handleChange} value={loginData.email} name='email' type='email'/>
-                    <label htmlFor='passsword'>Password:</label>
-                    <input onChange={handleChange} value={loginData.password} name='password' type='password'/>
-                    <button onClick={handleSubmit}>
-                        <p>Login</p>
-                    </button>
-                    <span><a>Forgot my Password</a> | <a>Sign Up</a></span>
-                    
-                </form>
+                {isSubmiting ? loader : form}
             </div>
         </div>
     )

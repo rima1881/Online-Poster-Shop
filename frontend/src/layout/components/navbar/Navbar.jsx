@@ -1,13 +1,45 @@
 import styles from './Navbar.module.css'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars ,faXmark ,faHome ,faCalendarTimes , faDollarSign ,faCircleInfo ,faCircleUser } from '@fortawesome/free-solid-svg-icons'
+import { faBars ,faXmark ,faHome ,faCalendarTimes , faDollarSign ,faCircleInfo ,faCircleUser , faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import useAuth from '../../../hooks/useAuth'
+
 
 export default function Navbar(props){
 
     const [ cliked , setClicked] = useState(false);
+    const { auth } = useAuth()
 
+    const userNav = <>
+        <span className={styles.login} >
+            <span onClick={props.AccountBtnHandle}>
+                <FontAwesomeIcon icon={faCircleUser} className={styles.navIcons}/>
+                Account
+                &nbsp;
+            </span>
+                |
+            <span onClick={props.CartBtnHandle}>
+                &nbsp; 
+                <FontAwesomeIcon icon={faShoppingCart} className={styles.navIcons} />
+                Cart
+            </span>
+        </span>
+    </>
 
+    const annoymousNav = <>
+        <span className={styles.login} >
+            <span onClick={props.loginBtnHandle}>
+                <FontAwesomeIcon icon={faCircleUser} className={styles.navIcons}/>
+                Login
+                &nbsp;
+            </span>
+                |
+            <span onClick={props.signupBtnHandle}>
+                &nbsp; 
+                Sign Up
+            </span>
+        </span>
+    </>
 
     return(
         <nav className={styles.navbar}>
@@ -37,30 +69,11 @@ export default function Navbar(props){
                     </a>
                 </li>
                 <li>
-                    <a className={styles.loginA}>
-                        <span>
-                            <FontAwesomeIcon icon={faCircleUser} className={styles.navIcons}/>
-                            Login
-                        </span> | 
-                        <span>
-                            Sign Up
-                        </span>
-                    </a>
+                    
                 </li>
             </ul>
 
-            <span className={styles.login} >
-                <span onClick={props.loginBtnHandle}>
-                    <FontAwesomeIcon icon={faCircleUser} className={styles.navIcons}/>
-                    Login
-                    &nbsp;
-                </span>
-                 |
-                 <span onClick={props.signupBtnHandle}>
-                    &nbsp; 
-                    Sign Up
-                 </span>
-            </span>
+            { auth.accessToken ? userNav : annoymousNav}
 
             <div className={styles.mobile} onClick={switchMod}>
                 <FontAwesomeIcon icon={cliked ? faXmark : faBars} className={styles.menuIcon} />
