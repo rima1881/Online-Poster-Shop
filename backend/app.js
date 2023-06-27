@@ -30,7 +30,7 @@ app.use(bodyparser.json())
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //setting up the routes
-app.use("/api/Product", productRoutes)
+app.use("/api/product", productRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/admin", adminRoutes)
 app.use("/api/drawing",DrawingRoutes)

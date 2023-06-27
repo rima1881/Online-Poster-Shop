@@ -1,5 +1,7 @@
 import Product from "../models/Product.mjs";
 
+
+//has to be fixed *************************************************************
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const addProduct = (req,res) => {
 
@@ -19,7 +21,7 @@ const addProduct = (req,res) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const getProducts = (req,res) => {
 
-    Product.findAll().then(model => {
+    Product.findAll({ attributes : ["id" , "name" , "price"]}).then(model => {
         res.status(200).json(model)
     })
     
@@ -42,6 +44,7 @@ const getProduct = (req,res) => {
 
 }
 
+//has to be fixed
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const editProduct = (req,res) => {
     const id = req.params.id
@@ -64,6 +67,8 @@ const editProduct = (req,res) => {
     })
 }
 
+
+//has to be fixed
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const removeProduct = (req,res) => {
     const id = req.params.id
