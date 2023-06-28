@@ -6,11 +6,14 @@
 .drawingSection{
     display: flex;
     width: 50%;
+    margin-top: 50px;
 }
 .detailsSection{
     display: flex;
     flex-direction: column;
     width: 50%;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 .artist{
     margin-left: auto;

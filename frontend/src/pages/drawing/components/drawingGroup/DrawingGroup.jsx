@@ -2,24 +2,34 @@ import styles from "./DrawingGroup.module.css"
 
 export default function DrawingGroup(props){
 
-    let activeOne;
+    const { changeDrawing } = props
 
+    const Pic = (props) => {
 
-    console.log(props.data)
+        const inActiveClickHandle = () => {
+            changeDrawing(prev => {
+                return {
+                    ...prev ,
+                    selectedDrawing : props.data
+                }
+            })
+        }
+        return(
+            <>
+                <img className={styles.inActive} onClick={inActiveClickHandle} src={`http://localhost:5000/images/${props.data.url}`} />
+            </>
+        )
+    }
 
-    const inActiveDrawings = props.data.map(d => {
-        if(!d.isDefault)
-            return <img src={`http://localhost:5000/images/${d.url}`} className={styles.inActive} />
-        else
-            activeOne = <img src={`http://localhost:5000/images/${d.url}`} className={styles.active} />
-    })
-
+    const inActiveDrawings = props.data.length > 1 ?  props.data.map(d => 
+        <Pic url={`http://localhost:5000/images/${d.url}`} data={d} sample="test" key={d.id} />
+    ) : null
 
 
     return(
         <div className={styles.container}>
             <div className={styles.activeContainer}>
-                {activeOne}
+            <img src={`http://localhost:5000/images/${props.activeOne.url}`} className={styles.active} />
             </div>
             <div className={styles.inActiveContainer}>
                 {inActiveDrawings}
@@ -27,3 +37,4 @@ export default function DrawingGroup(props){
         </div>
     )
 }
+

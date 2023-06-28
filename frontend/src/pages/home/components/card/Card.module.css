@@ -16,7 +16,6 @@
 .container:hover{
     margin-top: 45px;
     margin-bottom: 55px;
-    transition: 0.5s;
 }
 .imgContainer{
     border-radius: 5px 5px 0 0;

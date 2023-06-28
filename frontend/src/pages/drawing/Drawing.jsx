@@ -21,6 +21,7 @@ const Drawing = () => {
     const [order , setOrder] = useState({
         num : 1,
         selectedProduct : {price : 0},
+        selectedDrawing : { url : ""}
     })
 
     //Get the drawings
@@ -33,6 +34,12 @@ const Drawing = () => {
 
         }).then((response) => {
             setDrawings(response.data.data)
+            setOrder(prev => { 
+                return {
+                    ...prev,
+                     selectedDrawing : response.data.data[0]
+                }
+            })
             setArtist(response.data.artist)
         })
     },[])
@@ -87,7 +94,7 @@ const Drawing = () => {
         <div className={styles.container}>
         
             <div className={styles.drawingSection}>
-                <DrawingGroup data={drawings} />
+                <DrawingGroup data={drawings} changeDrawing={setOrder} activeOne={order.selectedDrawing} />
             </div>
 
             <div className={styles.detailsSection}>

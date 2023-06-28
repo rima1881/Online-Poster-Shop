@@ -8,6 +8,9 @@ import Cookies from 'js-cookie'
 export default function Navbar(props){
 
     const [ cliked , setClicked] = useState(false);
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const { auth , setAuth } = useAuth()
     const logoutHandel = () => {
         setAuth("")
@@ -15,15 +18,16 @@ export default function Navbar(props){
         Cookies.set("token","")
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const userNav = <>
         <span className={styles.login} >
-            <a href="/profile">
+            <a href="/profile" className={styles.profile}>
                 <FontAwesomeIcon icon={faCircleUser} className={styles.navIcons}/>
                 Account
                 &nbsp;
             </a>
                 |
-            <span onClick={props.CartBtnHandle}>
+            <span onClick={props.cartBtnHandle}>
                 &nbsp; 
                 <FontAwesomeIcon icon={faShoppingCart} className={styles.navIcons} />
                 Cart
@@ -31,6 +35,8 @@ export default function Navbar(props){
         </span>
     </>
 
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const annoymousNav = <>
         <span className={styles.login} >
             <span onClick={props.loginBtnHandle}>
@@ -46,6 +52,7 @@ export default function Navbar(props){
         </span>
     </>
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const logout = <>
         <li>
             <a href='#' onClick={logoutHandel}>
@@ -55,6 +62,7 @@ export default function Navbar(props){
         </li>
     </>
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
     return(
         <nav className={styles.navbar}>
             <ul className={cliked ? styles.active : ''}>

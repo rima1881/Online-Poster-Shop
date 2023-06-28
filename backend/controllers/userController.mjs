@@ -1,17 +1,27 @@
+import Cart from "../models/Cart.mjs"
+import CartItem from "../models/CartItem.mjs"
+import User from "../models/User.mjs"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const getCart = (req,res) => {
 
 }
 
+//has to be fixed **************************************************************
 /////////////////////////////////////////////////////////////////////////////////////////////////
-const addToCart = (req,res) => {
+const addToCart = async (req,res) => {
+    const { productId , quantity , userId} = req.body
+
+    let cart = await Cart.findAll({where : {userId : userId}})
+    if(!cart)
+        cart = await Cart.create({})
     
+    res.status(200).json({cart})
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const getOrders = (req,res) => {
-
+    
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,3 +33,5 @@ const getOrder = (req,res) => {
 const addOrder = (req,res) => {
 
 }
+
+export { addToCart}

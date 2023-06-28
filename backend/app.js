@@ -5,7 +5,8 @@ import sequelize from "./utils/sequelize.mjs"
 import productRoutes from "./routes/ProductRoutes.mjs"
 import authRoutes from "./routes/authRoutes.mjs"
 import adminRoutes from "./routes/adminRoutes.mjs"
-import DrawingRoutes from "./routes/drawingRoutes.mjs"
+import drawingRoutes from "./routes/drawingRoutes.mjs"
+import userRoutes from "./routes/userRoutes.mjs"
 import User from "./models/User.mjs"
 import Role from "./models/Role.mjs"
 import ProductType from "./models/Product.mjs"
@@ -33,7 +34,8 @@ app.use(bodyparser.json())
 app.use("/api/product", productRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/admin", adminRoutes)
-app.use("/api/drawing",DrawingRoutes)
+app.use("/api/drawing",drawingRoutes)
+app.use("/api/user", userRoutes)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
