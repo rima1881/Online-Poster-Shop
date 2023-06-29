@@ -107,9 +107,10 @@ export default function Login(props){
 
     return(
         <div className={ props.on ? styles.on : styles.hidden}>  
-            <div className={styles.container}>
-                {isSubmiting ? loader : form}
-            </div>
+                <div className={styles.container}>
+                    {isSubmiting ? loader : form}
+                </div>
         </div>
+        
     )
 }

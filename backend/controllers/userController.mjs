@@ -10,11 +10,25 @@ const getCart = (req,res) => {
 //has to be fixed **************************************************************
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const addToCart = async (req,res) => {
-    const { productId , quantity , userId} = req.body
+    const { productId , quantity } = req.body
 
-    let cart = await Cart.findAll({where : {userId : userId}})
-    if(!cart)
-        cart = await Cart.create({})
+    //has to be fixed *****************************************************************
+
+    try{
+        if(!req.user){
+            const error = new Error("unAtorized")
+            error.statusCode = 404
+            throw error
+        }
+    }
+    catch (error) {
+
+        //unknown error
+        if(!error.statusCode)
+            error.statusCode = 500
+
+        res.status(error.statusCode).json(error)
+    }
     
     res.status(200).json({cart})
 }

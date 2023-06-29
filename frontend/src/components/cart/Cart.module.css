@@ -13,6 +13,7 @@
     padding: 0;
     margin: 0;
     transition: 0.3s ease-in-out;
+    z-index: 5;
 }
 .container ul.active{
     right: 0px;

@@ -10,7 +10,7 @@ export default function Home(){
     const [listData, setListData] = useState([])
 
     useEffect(() => {
-        console.log("request was sent")
+
         axios({
             method: 'get',
             url:'/api/drawing',
@@ -20,7 +20,6 @@ export default function Home(){
             }
         }).then( Response => {
             setListData(Response.data.data)
-            console.log(Response.data.num)
         })
     },[])
 

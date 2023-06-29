@@ -14,7 +14,7 @@ const signup = async (req,res) => {
         const hasedpass = await bcrypt.hash(pwd,12)
 
         //add user to db
-        const result = await User.create({
+        const user = await User.create({
             email : email,
             pwd: hasedpass,
             name: name,
@@ -23,13 +23,15 @@ const signup = async (req,res) => {
 
         //create token
         const token = jwt.sign({
-            email : result.email,
-            id : result.id
+            email : user.email,
+            id : user.id
         }, 'asdgfl,jityhjktiomdlaasdhowwhypleasedonthackmealjkcmsdjkcnsjdklnvljdsvnknfd;iuvdfj', { expiresIn : "2h"})
             
+        await user.createCart()
+
 
         //has to be fixed ******************************************************
-        res.status(201).json({token : token})
+        res.status(201).json({token : token , cart})
 
     }
     catch(error) {
@@ -47,7 +49,7 @@ const login = async (req,res) => {
 
     try{
 
-        const user = await User.findOne({where : {email : email} , include :  [Role] , attributes : [ 'name' , 'email' , 'pwd']})
+        const user = await User.findOne({where : {email : email} , attributes : [ 'name' , 'email' , 'pwd']})
 
         console.log(user)
 

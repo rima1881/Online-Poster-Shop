@@ -8,7 +8,6 @@ export default function Card(props){
        backgroundImage : `url(http://localhost:5000/images/${props.data.url})`
    }
 
-   console.log(props.data)
 
    return(
        <div className={styles.container}>

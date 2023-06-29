@@ -29,7 +29,7 @@
     border-radius: 5px 5px 0 0;
     background-size: 100%;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
 }
 .btn{
@@ -40,19 +40,19 @@
     margin-bottom: 15px;
     text-decoration: none;
     font-weight: 300;
-    color: #EAB308;
+    color: #15aaff;
     font-family: 'Roboto', sans-serif;
     text-align: center;
     display: flex;
     justify-content: center;
     transition: 0.5s;
     border-radius: 5px;
-    border-color: #EAB308;
+    border-color: #15aaff;
     border-width: 0.5px;
     border-style: solid;
 }
 .btn:hover{
-    background-color: #EAB308;
+    background-color: #15aaff;
     color: #141A1E;
 }
 .btnText{
