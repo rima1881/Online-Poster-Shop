@@ -2,7 +2,6 @@ import Drawing from "../models/Drawing.mjs"
 import DrawingGroup from "../models/DrawingGroup.mjs"
 import User from "../models/User.mjs"
 
-//has to be fixed ****************************************
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const addDrawingGroup = async (req,res) => {
     const { name , url , resolution , userId , isDefault } = req.body

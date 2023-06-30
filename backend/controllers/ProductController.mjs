@@ -1,7 +1,6 @@
 import Product from "../models/Product.mjs";
 
 
-//has to be fixed *************************************************************
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const addProduct = (req,res) => {
 
@@ -44,7 +43,6 @@ const getProduct = (req,res) => {
 
 }
 
-//has to be fixed
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const editProduct = (req,res) => {
     const id = req.params.id
@@ -68,7 +66,6 @@ const editProduct = (req,res) => {
 }
 
 
-//has to be fixed
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const removeProduct = (req,res) => {
     const id = req.params.id

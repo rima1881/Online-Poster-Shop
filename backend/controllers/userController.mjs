@@ -3,34 +3,25 @@ import CartItem from "../models/CartItem.mjs"
 import User from "../models/User.mjs"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-const getCart = (req,res) => {
+const getCart = async (req,res) => {
+
+    const cart = await req.user.getCart()
+    res.status(200).json(cart.getCartItems())
 
 }
 
-//has to be fixed **************************************************************
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const addToCart = async (req,res) => {
-    const { productId , quantity } = req.body
 
-    //has to be fixed *****************************************************************
 
-    try{
-        if(!req.user){
-            const error = new Error("unAtorized")
-            error.statusCode = 404
-            throw error
-        }
-    }
-    catch (error) {
+    const { quantity , productId , drawingId} = req.body
+    const cart = await (req.user.getCart())
 
-        //unknown error
-        if(!error.statusCode)
-            error.statusCode = 500
+    await cart.createCartItem({ quantity : quantity , productId : productId , drawingId : drawingId })
+    const Items = await cart.getCartItems()
 
-        res.status(error.statusCode).json(error)
-    }
-    
-    res.status(200).json({cart})
+    res.status(201).json(Items)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,4 +39,4 @@ const addOrder = (req,res) => {
 
 }
 
-export { addToCart}
+export { addToCart , getCart}

@@ -23,14 +23,14 @@ const signup = async (req,res) => {
 
         //create token
         const token = jwt.sign({
-            email : user.email,
-            id : user.id
+            id : user.id.toString()
         }, 'asdgfl,jityhjktiomdlaasdhowwhypleasedonthackmealjkcmsdjkcnsjdklnvljdsvnknfd;iuvdfj', { expiresIn : "2h"})
             
         await user.createCart()
 
 
         //has to be fixed ******************************************************
+        //role has to be added
         res.status(201).json({token : token , cart})
 
     }
@@ -49,7 +49,7 @@ const login = async (req,res) => {
 
     try{
 
-        const user = await User.findOne({where : {email : email} , attributes : [ 'name' , 'email' , 'pwd']})
+        const user = await User.findOne({where : {email : email} , attributes : [ 'id' , 'name' , 'email' , 'pwd']})
 
         console.log(user)
 
@@ -68,13 +68,15 @@ const login = async (req,res) => {
             throw error
         }
 
+        console.log(user)
+
         //creating token
         const token = jwt.sign({
-            email : user.email,
-            id : user.id
+            id : user.id.toString()
         }, 'asdgfl,jityhjktiomdlaasdhowwhypleasedonthackmealjkcmsdjkcnsjdklnvljdsvnknfd;iuvdfj', { expiresIn : "2h"})
 
         //has to be fixed *****************************************
+        //role has to be added
         res.status(200).json({token : token})
 
     }
