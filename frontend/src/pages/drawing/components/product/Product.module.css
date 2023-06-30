@@ -1,0 +1,52 @@
+
+.active , .inActive:hover{
+    display: flex;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, #6E45E1 , #89D4CF);
+    margin-bottom: 10px;
+    width: 70%;
+    height: 50px;
+    margin-left: 5px;
+    font-family: 'Roboto', sans-serif;
+    color: azure;
+    cursor: pointer;
+}
+.inActive{
+    display: flex;
+    border-radius: 10px;
+    background: #fff;
+    color: #000;
+    margin-bottom: 10px;
+    width: 70%;
+    height: 50px;
+    margin-left: 5px;
+    font-family: 'Roboto', sans-serif;
+    border-style: solid;
+    border-width: 0.5px;
+    border-color: #e3e3e3;
+    cursor: pointer;
+}
+.disable{
+    display: flex;
+    border-radius: 10px;
+    background: #fff;
+    color: #000;
+    margin-bottom: 10px;
+    width: 70%;
+    height: 50px;
+    margin-left: 5px;
+    font-family: 'Roboto', sans-serif;
+    border-style: solid;
+    border-width: 0.5px;
+    border-color: #e3e3e3;
+    cursor: not-allowed;
+}
+.name{
+    margin: auto;
+    margin-left: 10px;
+}
+.price{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+}
