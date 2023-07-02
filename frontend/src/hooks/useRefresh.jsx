@@ -1,7 +1,7 @@
 import Cookies from "js-cookie"
 import axios from "axios"
 
-const useRefresh = async (setLoading , setAuth) => {
+const useRefresh = async (setLoading , setUser) => {
 
     const email = Cookies.get("email")
     const token = Cookies.get("token")
@@ -18,12 +18,13 @@ const useRefresh = async (setLoading , setAuth) => {
             url: "/api/auth/refresh",
             baseURL : 'http://localhost:5000',
             headers : { 'Content-Type': 'application/json'},
-            withCredentials: true
+            withCredentials: true,
+            data : JSON.stringify( { token : token})
         })
 
         //has to be fixed *********************************
         if(response.status == 200)
-            setAuth({email : email , role : 2001 ,accessToken : token})
+            setUser({email : email , role : 2001 ,token : token})
         else{
             Cookies.set("email","")
             Cookies.set("token","")

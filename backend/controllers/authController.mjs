@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs'
 import User from '../models/User.mjs'
 import jwt from "jsonwebtoken"
-import UserRole from '../models/UserRole.mjs'
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const signup = async (req,res) => {
@@ -72,8 +71,8 @@ const login = async (req,res) => {
         }, 'asdgfl,jityhjktiomdlaasdhowwhypleasedonthackmealjkcmsdjkcnsjdklnvljdsvnknfd;iuvdfj', { expiresIn : "2h"})
 
 
-        
-        const roles = user.getRoles({throw : UserRole})
+
+        const roles = await user.getRoles( {attributes : ["id"]} )
         const cart = user.getCart()
 
 
@@ -94,10 +93,30 @@ const login = async (req,res) => {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-//has to be fixed ******************************************************************
 const refresh = async (req,res) => {
+
+    const { token } = req.body
+
+
     try{
-        res.status(200).json({message : "i got you"})
+
+        if(!token){
+            const error = new Error("Not authenticated.")
+            error.statusCode = 401
+            throw error
+        }
+
+
+        const decodedToken = jwt.verify(token , "asdgfl,jityhjktiomdlaasdhowwhypleasedonthackmealjkcmsdjkcnsjdklnvljdsvnknfd;iuvdfj")   
+
+        if(!decodedToken){
+            const error = new Error("Not authenticated.")
+            error.statusCode = 401
+            throw error
+        }
+
+        res.status(200).json({})
+
     }
     catch(error){
 

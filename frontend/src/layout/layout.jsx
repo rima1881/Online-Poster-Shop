@@ -7,7 +7,6 @@ import Login from "../components/login/Login"
 import Cart from "../components/cart/Cart"
 import ScrollToTop from "../components/scrollToTop/ScrollToTop";
 import useAuth from '../hooks/useAuth'
-import Cookies from 'js-cookie'
 
 
 export default function Layout(){

@@ -6,9 +6,9 @@ import useAuth from "../hooks/useAuth";
 const CheckToken = () => {
 
     const [ loading , setLoading] = useState(true)
-    const { setAuth } = useAuth()
+    const { setUser } = useAuth()
 
-    useEffect( () => {useRefresh(setLoading, setAuth)},[])
+    useEffect( () => {useRefresh(setLoading, setUser)},[])
 
     return(
         loading ? <p>loading ...</p> : <Outlet />

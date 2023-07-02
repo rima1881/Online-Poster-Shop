@@ -3,8 +3,6 @@ import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightFromBracket ,faBars ,faXmark ,faHome ,faCalendarTimes , faDollarSign ,faCircleInfo ,faCircleUser , faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import useAuth from '../../hooks/useAuth'
-import Cookies from 'js-cookie'
-import logout from '../logout.mjs'
 
 export default function Navbar(props){
 
@@ -12,8 +10,9 @@ export default function Navbar(props){
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const { auth } = useAuth()
+    const { user , logout } = useAuth()
 
+    console.log(user)
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const userNav = <>
@@ -50,9 +49,9 @@ export default function Navbar(props){
     </>
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const logout = <>
+    const logoutBtn = <>
         <li>
-            <a href='#' onClick={() => {}}>
+            <a href='#' onClick={() => {logout()}}>
                 <FontAwesomeIcon icon={faRightFromBracket} className={styles.navIcons}/>
                 Logout
             </a>
@@ -87,10 +86,10 @@ export default function Navbar(props){
                         About Us
                     </a>
                 </li>
-                { auth.accessToken && logout}
+                { user.token && logoutBtn}
             </ul>
 
-            { auth.accessToken ? userNav : annoymousNav}
+            { user.token ? userNav : annoymousNav}
 
             <div className={styles.mobile} onClick={switchMod}>
                 <FontAwesomeIcon icon={cliked ? faXmark : faBars} className={styles.menuIcon} />

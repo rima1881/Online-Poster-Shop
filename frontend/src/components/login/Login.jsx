@@ -4,7 +4,6 @@ import useAuth from '../../hooks/useAuth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios';
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import Cookies from 'js-cookie';
 
 export default function Login(props){
 
@@ -19,7 +18,7 @@ export default function Login(props){
     const [errMsg, setErrMsg] = useState('');
     const [ isSubmiting , setIsSubmiting ] = useState(false)
 
-    const { setAuth } = useAuth()
+    const { setUser } = useAuth()
 
 
     function handleChange(event){
@@ -52,13 +51,11 @@ export default function Login(props){
                 })
 
 
-                const accessToken = Response?.data?.token;
+                const token = Response?.data?.token;
                 const { email } = loginData
 
                 //has to be fixed *******************************************************
-                await setAuth({ email : email, role : 2001, accessToken : accessToken })
-                Cookies.set("email", email)
-                Cookies.set("token",accessToken)
+                await setUser({ email : email, role : 2001, token : token })
 
                 props.closeBtnhandle()
 

@@ -21,12 +21,10 @@ const isAuth = async (req,res,next) => {
             throw error
         }
 
-        console.log(decodedToken)
 
         const user = await User.findByPk(decodedToken.id)
         req.user = user
 
-        console.log(user)
         next()
 
     }
