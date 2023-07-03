@@ -52,6 +52,8 @@ export default function Login(props){
 
 
                 const token = Response?.data?.token;
+                const roles = Response?.data?.roles
+                console.log(roles)
                 const { email } = loginData
 
                 //has to be fixed *******************************************************

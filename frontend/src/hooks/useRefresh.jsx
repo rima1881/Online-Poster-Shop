@@ -6,9 +6,9 @@ const useRefresh = async (setLoading , setUser) => {
     const email = Cookies.get("email")
     const token = Cookies.get("token")
 
+
     if(!token || !email){
-        Cookies.set("email","")
-        Cookies.set("token","")
+        setUser({email : "",role : 0 , token : ""})
     }
     else{
         
@@ -19,15 +19,14 @@ const useRefresh = async (setLoading , setUser) => {
             baseURL : 'http://localhost:5000',
             headers : { 'Content-Type': 'application/json'},
             withCredentials: true,
-            data : JSON.stringify( { token : token})
+            data : JSON.stringify({ token : token})
         })
 
         //has to be fixed *********************************
         if(response.status == 200)
             setUser({email : email , role : 2001 ,token : token})
         else{
-            Cookies.set("email","")
-            Cookies.set("token","")
+            setUser({email : "",role : 0 , token : ""})
         }
 
     }

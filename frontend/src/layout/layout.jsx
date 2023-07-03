@@ -15,11 +15,12 @@ export default function Layout(){
     const [SigningUp , setSigningUp] = useState(false)
     const [ showCart , setShowCart ] = useState(false)
 
+    const { user } = useAuth() 
 
     return(
         <main>
 
-            <Navbar loginBtnHandle={ () => setLoginIn(true) } signupBtnHandle={() => setSigningUp(true)} cartBtnHandle={() => setShowCart(prev => !prev)} />
+            <Navbar user={user} loginBtnHandle={ () => setLoginIn(true) } signupBtnHandle={() => setSigningUp(true)} cartBtnHandle={() => setShowCart(prev => !prev)} />
             <Outlet />
             <Footer />
             

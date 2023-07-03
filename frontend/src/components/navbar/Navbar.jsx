@@ -1,6 +1,7 @@
 import styles from './Navbar.module.css'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import AdminNavbar from './adminNavbar/AdminNavbar'
 import { faRightFromBracket ,faBars ,faXmark ,faHome ,faCalendarTimes , faDollarSign ,faCircleInfo ,faCircleUser , faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import useAuth from '../../hooks/useAuth'
 
@@ -8,14 +9,8 @@ export default function Navbar(props){
 
     const [ cliked , setClicked] = useState(false);
 
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const { user , logout } = useAuth()
-
-    console.log(user)
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const userNav = <>
+    const LoggedIn = <>
         <span className={styles.login} >
             <a href="/profile" className={styles.profile}>
                 <FontAwesomeIcon icon={faCircleUser} className={styles.navIcons}/>
@@ -33,7 +28,7 @@ export default function Navbar(props){
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const annoymousNav = <>
+    const Annoymous = <>
         <span className={styles.login} >
             <span onClick={props.loginBtnHandle}>
                 <FontAwesomeIcon icon={faCircleUser} className={styles.navIcons}/>
@@ -48,48 +43,53 @@ export default function Navbar(props){
         </span>
     </>
 
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const logoutBtn = <>
-        <li>
-            <a href='#' onClick={() => {logout()}}>
-                <FontAwesomeIcon icon={faRightFromBracket} className={styles.navIcons}/>
-                Logout
-            </a>
-        </li>
+
+    const navbar = <>
+    
+            <li>
+                <a href='/'>
+                    <FontAwesomeIcon icon={faHome} className={styles.navIcons}/>
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href='/comingsoon'>
+                    <FontAwesomeIcon icon={faCalendarTimes} className={styles.navIcons}/>
+                    Coming soon
+                </a>
+            </li>
+
+            <li>
+                <a href='/donation'>
+                    <FontAwesomeIcon icon={faDollarSign} className={styles.navIcons}/>
+                    Donation
+                </a>
+            </li>
+
+            <li>
+                <a href='/aboutus'>
+                    <FontAwesomeIcon icon={faCircleInfo} className={styles.navIcons}/>
+                    About Us
+                </a>
+            </li>
+
     </>
+
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     return(
         <nav className={styles.navbar}>
+
             <ul className={cliked ? styles.active : ''}>
-                <li>
-                    <a href='/'>
-                        <FontAwesomeIcon icon={faHome} className={styles.navIcons}/>
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a href='/comingsoon'>
-                    <FontAwesomeIcon icon={faCalendarTimes} className={styles.navIcons}/>
-                        Coming soon
-                    </a>
-                </li>
-                <li>
-                    <a href='/donation'>
-                    <FontAwesomeIcon icon={faDollarSign} className={styles.navIcons}/>
-                        Donation
-                    </a>
-                </li>
-                <li>
-                    <a href='/aboutus'>
-                    <FontAwesomeIcon icon={faCircleInfo} className={styles.navIcons}/>
-                        About Us
-                    </a>
-                </li>
-                { user.token && logoutBtn}
+                {props.user.role == 1 ? <AdminNavbar /> : navbar}
             </ul>
 
-            { user.token ? userNav : annoymousNav}
+
+            {props.user.role == 0 ? Annoymous : LoggedIn}
 
             <div className={styles.mobile} onClick={switchMod}>
                 <FontAwesomeIcon icon={cliked ? faXmark : faBars} className={styles.menuIcon} />
