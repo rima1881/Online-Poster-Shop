@@ -1,13 +1,13 @@
 import styles from './Navbar.module.css'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import AdminNavbar from './adminNavbar/AdminNavbar'
 import { faRightFromBracket ,faBars ,faXmark ,faHome ,faCalendarTimes , faDollarSign ,faCircleInfo ,faCircleUser , faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import useAuth from '../../hooks/useAuth'
 
 export default function Navbar(props){
 
     const [ cliked , setClicked] = useState(false);
+    const { logout } = useAuth()
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const LoggedIn = <>
@@ -78,18 +78,28 @@ export default function Navbar(props){
 
     </>
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    const logoutBtn = <>
+        <li onClick={logout}>
+            <a>
+                Logout
+            </a>
+        </li>
+    </>
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     return(
         <nav className={styles.navbar}>
 
             <ul className={cliked ? styles.active : ''}>
-                {props.user.role == 1 ? <AdminNavbar /> : navbar}
+                {navbar}
+                {props.user.roles.includes(2) && logoutBtn}
             </ul>
 
 
-            {props.user.role == 0 ? Annoymous : LoggedIn}
+
+            {props.user.roles.includes(2) ? LoggedIn : Annoymous}
 
             <div className={styles.mobile} onClick={switchMod}>
                 <FontAwesomeIcon icon={cliked ? faXmark : faBars} className={styles.menuIcon} />

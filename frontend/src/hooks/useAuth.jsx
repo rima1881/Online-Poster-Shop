@@ -2,16 +2,6 @@ import Cookies from "js-cookie"
 import { useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 
-/*
-const useAuth = () => {
-
-    return useContext(AuthContext);
-}
-
-export default useAuth;*/
-
-
-
 const context = () => {
 
     return useContext(AuthContext);
@@ -24,7 +14,6 @@ const useAuth = () => {
 
     const setUser = async (user) => {
 
-        console.log(user)
 
         try{
             await setAuth(user)
@@ -41,7 +30,7 @@ const useAuth = () => {
     const user = auth
 
     const logout = () => {
-        setUser()
+        setUser({email : "" , roles : [] ,token : ""})
         Cookies.set("email", "")
         Cookies.set("token", "")
     }

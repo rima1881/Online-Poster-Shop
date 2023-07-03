@@ -76,9 +76,10 @@ const login = async (req,res) => {
         const cart = user.getCart()
 
 
-        //has to be fixed *****************************************
+
+
         //role has to be added
-        res.status(200).json({token : token , cart : cart , roles : roles})
+        res.status(200).json({token : token , cart : cart , roles : roles.map(role => role.id)})
 
     }
     catch(error){
@@ -91,6 +92,7 @@ const login = async (req,res) => {
         res.status(error.statusCode).json({error : error.message})
     }
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 const refresh = async (req,res) => {
@@ -115,7 +117,12 @@ const refresh = async (req,res) => {
             throw error
         }
 
-        res.status(200).json({})
+        const id = decodedToken.id
+        const user = User.findByPk(id)
+        const roles = await user.getRoles( {attributes : ["id"]} ).map(role => role.id)
+        const cart = user.getCart()
+
+        res.status(200).json({cart : cart , roles : roles})
 
     }
     catch(error){

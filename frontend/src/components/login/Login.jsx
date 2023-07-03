@@ -53,11 +53,10 @@ export default function Login(props){
 
                 const token = Response?.data?.token;
                 const roles = Response?.data?.roles
-                console.log(roles)
                 const { email } = loginData
 
                 //has to be fixed *******************************************************
-                await setUser({ email : email, role : 2001, token : token })
+                await setUser({ email : email, roles : roles, token : token })
 
                 props.closeBtnhandle()
 
