@@ -32,8 +32,8 @@ const initials = async () => {
 
 
         //assigning admin roles
-        admin.addRole(userRole , { throw : UserRole })
-        admin.addRole(adminRole , { throw : UserRole })
+        admin.addRole(userRole , { through : UserRole })
+        admin.addRole(adminRole , { through : UserRole })
 
 
     }

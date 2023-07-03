@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
-import { useState , useEffect } from "react"
+import { useState } from "react"
+import useAuth from '../hooks/useAuth'
 import Navbar from "../components/navbar/Navbar"
 import Footer from "../components/footer/Footer"
 import Signup from "../components/signup/Signup"
 import Login from "../components/login/Login"
 import Cart from "../components/cart/Cart"
 import ScrollToTop from "../components/scrollToTop/ScrollToTop";
-import useAuth from '../hooks/useAuth'
+import AdminNavbar from "../components/adminNavbar/AdminNavbar";
 
 
 export default function Layout(){
@@ -17,10 +18,13 @@ export default function Layout(){
 
     const { user } = useAuth() 
 
+    console.log(user)
+
     return(
         <main>
 
             <Navbar user={user} loginBtnHandle={ () => setLoginIn(true) } signupBtnHandle={() => setSigningUp(true)} cartBtnHandle={() => setShowCart(prev => !prev)} />
+            { user.roles.include(1) && <AdminNavbar />}
             <Outlet />
             <Footer />
             

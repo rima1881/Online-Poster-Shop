@@ -1,7 +1,7 @@
 import Cookies from "js-cookie"
 import axios from "axios"
 
-const useRefresh = (setLoading , setUser) => {
+const useRefresh = async (setLoading , setUser) => {
 
     const email = Cookies.get("email")
     const token = Cookies.get("token")
@@ -13,22 +13,25 @@ const useRefresh = (setLoading , setUser) => {
     else{
         
         //has to be fixed *********************************
-        axios({
+        const test = await axios({
             method: "Post",
             url: "/api/auth/refresh",
             baseURL : 'http://localhost:5000',
             headers : { 'Content-Type': 'application/json'},
             withCredentials: true,
             data : JSON.stringify({ token : token})
-        }).then( (response) => {
+        }).then( async (response) => {
 
             const roles = response.data.roles
             const cart = response.data.cart
-            setUser({email : email , roles : roles ,token : token})
 
-        }).catch( () => {
+            console.log(roles)
+
+            await setUser({email : email , roles : roles ,token : token})
+
+        }).catch( async () => {
             
-            setUser({email : "",role : [] , token : ""})
+            await setUser({email : "",roles : [0] , token : ""})
 
         })
 

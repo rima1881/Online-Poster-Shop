@@ -43,7 +43,7 @@ setRelations()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //connecting to db
 //has to be changed before release *******************************************************************
-sequelize.sync({ force : true }).then( () => {
+sequelize.sync().then( () => {
 
     //create admin
     initials()

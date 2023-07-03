@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import useAuth from '../../hooks/useAuth'
-import Cookies from 'js-cookie'
 import axios from 'axios';
 
 
@@ -18,7 +17,7 @@ export default function Signup(props){
         }
     )
 
-    const { setAuth } = useAuth()
+    const { setUser } = useAuth()
 
     const handleChange = (event) => {
         const { name , value} = event.target
@@ -51,12 +50,11 @@ export default function Signup(props){
                     }),
                 })
 
-                const accessToken = response?.data?.token;
+                const token = response?.data?.token;
+                const roles = response?.data?.roles;
                 const { email } = formData
 
-                await setAuth({ email : email, role : 2001, accessToken : accessToken })
-                Cookies.set("email",email)
-                Cookies.set("token",accessToken)
+                await setUser({ email : email, roles : roles, token : token })
 
                 props.closeBtnhandle()
 

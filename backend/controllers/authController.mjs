@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs'
 import User from '../models/User.mjs'
 import jwt from "jsonwebtoken"
+import Role from '../models/Role.mjs'
+import UserRole from '../models/UserRole.mjs'
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const signup = async (req,res) => {
@@ -26,10 +28,13 @@ const signup = async (req,res) => {
             
         const cart = await user.createCart()
 
+        Role.findByPk(2).then(role => {
+            user.addRole(role , { through : UserRole})
+        })
 
         //has to be fixed ******************************************************
         //role has to be added
-        res.status(201).json({token : token , cart})
+        res.status(201).json({token : token , cart , roles : [2]})
 
     }
     catch(error) {
@@ -118,11 +123,15 @@ const refresh = async (req,res) => {
         }
 
         const id = decodedToken.id
-        const user = User.findByPk(id)
-        const roles = await user.getRoles( {attributes : ["id"]} ).map(role => role.id)
+        const user = await User.findByPk(id)
+
+
+        console.log(user)
+
+        const roles = await user.getRoles( {attributes : ["id"]} )
         const cart = user.getCart()
 
-        res.status(200).json({cart : cart , roles : roles})
+        res.status(200).json({cart : cart , roles : roles.map(role => role.id)})
 
     }
     catch(error){
