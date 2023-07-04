@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useState , useEffect } from "react"
+import useAuth from "../../hooks/useAuth";
 import axios from 'axios';
 import styles from "./Drawing.module.css"
 import Product from "./components/product/Product";
@@ -10,6 +11,8 @@ const Drawing = () => {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const  { id } = useParams()
+
+    const { user } = useAuth()
 
     const [drawings,setDrawings] = useState([])
     const [ products , setProducts ] = useState([])
@@ -86,7 +89,22 @@ const Drawing = () => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const submitHandle = (e) => {
         e.preventDefault()
-        console.log("you crazy bitch")
+
+        console.log(order.selectedProduct.id)
+
+        axios({
+            method : "POST",
+            url:'/api/user/cart',
+            baseURL : 'http://localhost:5000',
+            headers : {
+                Authorization : user.token
+            },
+            data : JSON.stringify({
+                quantity : order.num,
+                productId : order.selectedProduct.id,
+                drawingId : order.selectedDrawing.id
+            })
+        })
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,8 +142,7 @@ const Drawing = () => {
                 </div>
                 <hr />
                 <form className={styles.form}>
-                    <input type="hidden" value={order} />
-                    <button className={styles.addToCart}>Add to the Cart</button>
+                    <button onClick={submitHandle} className={styles.addToCart}>Add to the Cart</button>
                 </form>
             </div>
         </div>

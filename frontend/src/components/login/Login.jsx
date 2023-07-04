@@ -48,7 +48,7 @@ export default function Login(props){
                 email : loginData.email,
                 pwd : loginData.password
                 }),
-                })
+            })
 
 
                 const token = Response?.data?.token;

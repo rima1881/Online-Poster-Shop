@@ -1,6 +1,5 @@
-import Cart from "../models/Cart.mjs"
-import CartItem from "../models/CartItem.mjs"
-import User from "../models/User.mjs"
+import Product from "../models/Product.mjs"
+import Drawing from "../models/Drawing.mjs"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const getCart = async (req,res) => {
@@ -14,14 +13,49 @@ const getCart = async (req,res) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const addToCart = async (req,res) => {
 
+    console.log(req)
+
 
     const { quantity , productId , drawingId} = req.body
-    const cart = await (req.user.getCart())
 
-    await cart.createCartItem({ quantity : quantity , productId : productId , drawingId : drawingId })
-    const Items = await cart.getCartItems()
+    console.log(req.body)
 
-    res.status(201).json(Items)
+    try{
+
+        //Check Product Id
+        const product = Product.findByPk(productId)
+        if(!product)
+        {
+            const error = new Error("Product not found!!!");
+            error.statusCode = 404
+            throw error
+        }
+
+        //Check Drawing Id
+        const drawing = Drawing.findByPk(drawingId)
+        if(!drawing)
+        {
+            const error = new Error("Drawing not found!!!")
+            error.statusCode = 404
+            throw error
+        }
+
+        //fetching UserCart
+        const cart = await (req.user.getCart())
+
+        const item = await cart.createCartItem({ quantity : quantity})
+        item.setProduct(product)
+        item.setDrawing(drawing)
+
+        res.status(201).json({ message : "Item is added"})
+    }
+    catch(error){
+
+        if(!error.statusCode)
+            error.statusCode = 500
+
+        res.status(error.statusCode).json(error)
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

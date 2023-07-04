@@ -8,12 +8,15 @@ const useRefresh = async (setLoading , setUser) => {
 
 
     if(!token || !email){
-        setUser({email : "",roles : [] , token : ""})
+        await setUser({email : "",roles : [] , token : ""})
+
+        setLoading(false)
+
     }
     else{
         
         //has to be fixed *********************************
-        const test = await axios({
+        axios({
             method: "Post",
             url: "/api/auth/refresh",
             baseURL : 'http://localhost:5000',
@@ -28,16 +31,19 @@ const useRefresh = async (setLoading , setUser) => {
             console.log(roles)
 
             await setUser({email : email , roles : roles ,token : token})
+            setLoading(false)
+
 
         }).catch( async () => {
             
             await setUser({email : "",roles : [0] , token : ""})
+            setLoading(false)
+
 
         })
 
     }
 
-    setLoading(false)
     
 }
 

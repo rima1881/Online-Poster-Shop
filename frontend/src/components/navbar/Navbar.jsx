@@ -94,12 +94,13 @@ export default function Navbar(props){
 
             <ul className={cliked ? styles.active : ''}>
                 {navbar}
-                {props.user.roles.includes(2) && logoutBtn}
+                {console.log(props.user.roles )}
+                { props.user.roles && props.user.roles.includes(2) && logoutBtn}
             </ul>
 
 
 
-            {props.user.roles.includes(2) ? LoggedIn : Annoymous}
+            { props.user.roles && props.user.roles.includes(2) ? LoggedIn : Annoymous}
 
             <div className={styles.mobile} onClick={switchMod}>
                 <FontAwesomeIcon icon={cliked ? faXmark : faBars} className={styles.menuIcon} />
