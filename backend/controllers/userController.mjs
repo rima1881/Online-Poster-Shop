@@ -5,20 +5,31 @@ import Drawing from "../models/Drawing.mjs"
 const getCart = async (req,res) => {
 
     const cart = await req.user.getCart()
-    res.status(200).json(cart.getCartItems())
 
+    const items = await cart.getCartItems()
+
+    const mappedItems = await items.map(async i => {
+
+        const drawing = await i.getDrawing()
+        const product = await i.getProduct()
+
+
+        return { id : i.id , name : `${drawing.name} - ${product.name}` , price : product.price * i.quantity}
+    })
+
+    Promise.all(mappedItems).then( result => {
+        res.status(200).json(result)
+    })
 }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const addToCart = async (req,res) => {
 
-    console.log(req)
-
 
     const { quantity , productId , drawingId} = req.body
 
-    console.log(req.body)
+    console.log(productId)
 
     try{
 
@@ -43,9 +54,7 @@ const addToCart = async (req,res) => {
         //fetching UserCart
         const cart = await (req.user.getCart())
 
-        const item = await cart.createCartItem({ quantity : quantity})
-        item.setProduct(product)
-        item.setDrawing(drawing)
+        const item = await cart.createCartItem({ quantity : quantity , productId : productId , drawingId : drawingId})
 
         res.status(201).json({ message : "Item is added"})
     }
@@ -59,6 +68,26 @@ const addToCart = async (req,res) => {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+
+const deleteCartItem = (req,res) => {
+    const {id} = req.parrams
+    const user = req.user
+
+    user.getCart.then(cart => {
+        cart.deleteCartItem({where : { id : id}}).then(
+            res.status(202).json({message : "item is deleted"})
+        )
+    })
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+const deleteCart = (req,res) => {
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
 const getOrders = (req,res) => {
     
 }
@@ -73,4 +102,4 @@ const addOrder = (req,res) => {
 
 }
 
-export { addToCart , getCart}
+export { addToCart , getCart , deleteCartItem}

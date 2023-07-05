@@ -1,13 +1,33 @@
 import styles from "./Cart.module.css"
-import { useEffect , useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
+import axios from "axios"
+import useAuth from "../../hooks/useAuth"
 
 const Cart = (props) => {
 
-    useEffect(() => {
+    const { user } = useAuth()
 
-    },)
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    const deleteItem = (id) => {
+        axios({
+            method : "DELETE",
+            url:'/api/user/cart',
+            baseURL : 'http://localhost:5000',
+            withCredentials : true,
+            params : { id : id },
+            headers : {
+                Authorization : user.token
+            }
+        }).then(response => {
+            if(response.status == 202)
+                props.deleteItem(id)
+        }).catch( err => 
+            console.error(err)
+        )
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -15,17 +35,12 @@ const Cart = (props) => {
         Empty :(
     </span>
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    const deleteItem = () => {
-        console.log("fuck off")
-    }
 
     ////////////////////////////////////////////////////
 
     const mappedItems = props.data.map(i => <li>
         <span>{i.name}</span>
-        <span>${i.price} | <FontAwesomeIcon icon={faTrash} onClick={deleteItem} className={styles.icon} /></span>
+        <span>${i.price} | <FontAwesomeIcon icon={faTrash} onClick={deleteItem(i.id)} key={i.id} className={styles.icon} /></span>
     </li>)
 
 

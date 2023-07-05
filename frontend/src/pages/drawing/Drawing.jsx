@@ -91,19 +91,24 @@ const Drawing = () => {
         e.preventDefault()
 
         console.log(order.selectedProduct.id)
+        console.log(order.selectedDrawing.id)
 
         axios({
             method : "POST",
             url:'/api/user/cart',
             baseURL : 'http://localhost:5000',
+            withCredentials : true,
+            data : {
+                quantity : order.num,
+                productId : order.selectedProduct.id,
+                drawingId : order.selectedDrawing.id,
+            },
             headers : {
                 Authorization : user.token
             },
-            data : JSON.stringify({
-                quantity : order.num,
-                productId : order.selectedProduct.id,
-                drawingId : order.selectedDrawing.id
-            })
+        }).then(response => {
+            console.log(response)
+            window.location.reload(false)
         })
     }
 

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { useState } from "react"
+import { useState , useEffect } from "react"
 import axios from 'axios';
 import useAuth from '../hooks/useAuth'
 import Navbar from "../components/navbar/Navbar"
@@ -20,6 +20,13 @@ export default function Layout(){
 
     const { user } = useAuth() 
 
+    useEffect( () => {
+
+        if(user.roles.includes(2))
+            refreshCart()
+
+    },[user])
+
 
     const refreshCart = async () => {
         axios({
@@ -30,15 +37,14 @@ export default function Layout(){
                 Authorization : user.token
             }
         }).then( response => {
-            if(response.status == 201){
-                setCartItems(response.data.items)
+            console.log(response)
+            if(response.status == 200){
+                setCartItems(response.data)
             }
         }).catch( err => 
             console.error(err)    
         )
     }
-
-
 
     return(
         <main>
@@ -47,7 +53,6 @@ export default function Layout(){
             { user.roles.includes(1) && <AdminNavbar />}
             <Outlet />
             <Footer />
-            <button onClick={refreshCart}>click me</button>
             <Login on={logingIn} closeBtnhandle={() => setLoginIn(false)} />
             <Signup on={SigningUp} closeBtnhandle={() => setSigningUp(false)}  />
             { user.roles.includes(2) &&  <Cart on={showCart} data={cartItems} />}
