@@ -13,10 +13,9 @@ const Cart = (props) => {
     const deleteItem = (id) => {
         axios({
             method : "DELETE",
-            url:'/api/user/cart',
+            url:`/api/user/cart/${id}`,
             baseURL : 'http://localhost:5000',
             withCredentials : true,
-            params : { id : id },
             headers : {
                 Authorization : user.token
             }
@@ -38,9 +37,9 @@ const Cart = (props) => {
 
     ////////////////////////////////////////////////////
 
-    const mappedItems = props.data.map(i => <li>
+    const mappedItems = props.data.map(i => <li key={i.id} >
         <span>{i.name}</span>
-        <span>${i.price} | <FontAwesomeIcon icon={faTrash} onClick={deleteItem(i.id)} key={i.id} className={styles.icon} /></span>
+        <span>${i.price} | <FontAwesomeIcon icon={faTrash} onClick={() => deleteItem(i.id)} className={styles.icon} /></span>
     </li>)
 
 

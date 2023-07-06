@@ -6,7 +6,6 @@ const router = Router()
 
 router.post("/cart" , isAuth ,addToCart)
 router.get("/cart" , isAuth , getCart)
-router.delete("/cart", isAuth , deleteCartItem)
-router.get("/",isAuth , (req,res) => { res.status(200).json({m : "hello world"})})
+router.delete("/cart/:id", isAuth , deleteCartItem)
 
 export default router

@@ -1,5 +1,6 @@
 import Product from "../models/Product.mjs"
 import Drawing from "../models/Drawing.mjs"
+import CartItems from "../models/CartItem.mjs"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const getCart = async (req,res) => {
@@ -54,7 +55,7 @@ const addToCart = async (req,res) => {
         //fetching UserCart
         const cart = await (req.user.getCart())
 
-        const item = await cart.createCartItem({ quantity : quantity , productId : productId , drawingId : drawingId})
+        await cart.createCartItem({ quantity : quantity , productId : productId , drawingId : drawingId})
 
         res.status(201).json({ message : "Item is added"})
     }
@@ -69,15 +70,35 @@ const addToCart = async (req,res) => {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-const deleteCartItem = (req,res) => {
-    const {id} = req.parrams
+const deleteCartItem = async (req,res) => {
+
+    const {id} = req.params
     const user = req.user
 
-    user.getCart.then(cart => {
-        cart.deleteCartItem({where : { id : id}}).then(
-            res.status(202).json({message : "item is deleted"})
-        )
-    })
+    try{
+        
+        const cart = await user.getCart()
+
+        const item = await cart.getCartItems({where : { id : id}})
+
+        if(!item){
+            const error = new Error("item not found")
+            error.statusCode = 404
+            throw error
+        }
+
+        await CartItems.destroy({where : { id : id}})
+
+        res.status(202).json({message : "item is deleted"})
+    }
+    catch(err){
+        if(!err.statusCode)
+            err.statusCode = 500
+
+        res.status(err.statusCode).json(err)
+    }
+
+    
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
