@@ -27,6 +27,12 @@ export default function Layout(){
 
     },[user])
 
+    const deleteItem = (id) => {
+
+        console.log(id)
+
+    }
+
 
     const refreshCart = async () => {
         axios({
@@ -55,7 +61,7 @@ export default function Layout(){
             <Footer />
             <Login on={logingIn} closeBtnhandle={() => setLoginIn(false)} />
             <Signup on={SigningUp} closeBtnhandle={() => setSigningUp(false)}  />
-            { user.roles.includes(2) &&  <Cart on={showCart} data={cartItems} />}
+            { user.roles.includes(2) &&  <Cart on={showCart} deleteItem={deleteItem} data={cartItems} />}
             <ScrollToTop />
 
         </main>

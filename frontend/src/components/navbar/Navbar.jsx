@@ -12,7 +12,7 @@ export default function Navbar(props){
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const LoggedIn = <>
         <span className={styles.login} >
-            <a href="/profile" className={styles.profile}>
+            <a href="/account" className={styles.profile}>
                 <FontAwesomeIcon icon={faCircleUser} className={styles.navIcons}/>
                 Account
                 &nbsp;

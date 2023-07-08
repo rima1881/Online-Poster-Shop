@@ -5,8 +5,8 @@ import CheckToken from "./components/CheckToken"
 import Layout from "./layout/layout"
 import Home from "./pages/home/Home"
 import Drawing from "./pages/drawing/Drawing"
+import Account from "./pages/account/Account";
 import Donation from "./pages/donation/Donation"
-import Profile from "./pages/profile/Profile"
 import AboutUs from "./pages/aboutUs/AboutUs"
 import Artist from "./pages/artist/Artist"
 
@@ -34,9 +34,9 @@ function App() {
             <Route path="/aboutus" element={<AboutUs />} />
 
             {/*user paths*/}
-            <Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>  
-              <Route path="/profile" element={<Profile />} />
-            </Route>
+            {/*<Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>  */}
+              <Route path="/account" element={<Account />} />
+            {/*</Route>*/}
 
 
             {/*illustrator paths */}

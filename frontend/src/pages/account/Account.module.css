@@ -1,0 +1,40 @@
+
+.container{
+    width: 100%;
+    margin-top: 6vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.details{
+    margin-top: 50px;
+    width: 85%;
+    height: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #e3e3e3;
+}
+.order{
+    margin-top: 30px;
+    width: 85%;
+    height: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #e3e3e3;
+    margin-bottom: 50px;
+}
+.order ul{
+    list-style: none;
+}
+.orderHeader{
+    border-bottom-style: solid;
+    border-bottom-color: #333;
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    border-bottom-width: 1px;
+}
+.orderHeader span{
+    margin: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
