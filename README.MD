@@ -1,0 +1,1 @@
+This is an online shop written in node js and react js and mariadb. the shop purpose is to sell drawings but with a few changes the purpose of site can be changed.don't forget to change the constants of your server before using it. All the code is written by me. if you have any question or request don't hesitate to contact me :)

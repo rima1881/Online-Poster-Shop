@@ -5,7 +5,7 @@ import { useEffect , useState } from "react"
 export default function Account(){
 
     const [ orders , setOrders ] = useState([])
-    const [ acount , setAccount] = useState({
+    const [ account , setAccount] = useState({
         name : "",
         email : "",
         pic : "",
