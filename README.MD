@@ -55,14 +55,14 @@ In order to change the initial values edit backend/utils/initials.mjs
 <h2>
 Frontend
 </h2>
-front end is writen in reactjs.
+frontend is writen in reactjs.
 
 <b>Nodejs is required to run the program</b>
 
 In order to run the program run flowing codes :
 
 Change directory
->cd fronend
+>cd frontend
 
 Install required Libraries
 >npm i
@@ -70,8 +70,17 @@ Install required Libraries
 Run local Server
 >npm run dev
 
+<h2>Future Updates</h2>
 
-<br />
+<ul>
+    <li>The current authorization system is going to be replaced </li>
+    <li>Admin and artist page will be fixed soon</li>
+    <li>I am planing to migrate from javascript to typescript due to many type error problems</li>
+    <li>I am going to make a file for each API's entry point</li>
+
+</ul>
+
+
 <h2>Requents and Problems</h2>
 If you have any request or problem with the code please let me know. I will try to respond as fast as I can.
 
