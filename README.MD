@@ -72,8 +72,7 @@ Run local Server
 
 
 <br />
-<h3>Requents and Problems</h3>
-<hr />
+<h2>Requents and Problems</h2>
 If you have any request or problem with the code please let me know. I will try to respond as fast as I can.
 
 my email address : amirmohammadgharibipour@gmail.com
